@@ -4,7 +4,7 @@ apt update && apt upgrade -y
 
 add-apt-repository -y ppa:maxmind/ppa
 
-apt install -y software-properties-common curl wget libgd-dev libgeoip-dev libpcre3-dev libperl-dev libssl-dev libxslt-dev lsb-release zlib1g-dev tar unzip libpq-dev libpam0g-dev uuid-dev mmdb-bin libmaxminddb0 libmaxminddb-dev
+apt install -y build-essential software-properties-common curl wget libgd-dev libgeoip-dev libpcre3-dev libperl-dev libssl-dev libxslt-dev lsb-release zlib1g-dev tar unzip libpq-dev libpam0g-dev uuid-dev mmdb-bin libmaxminddb0 libmaxminddb-dev
 
 ##### #####
 # Download NGINX
