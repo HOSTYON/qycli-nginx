@@ -186,20 +186,23 @@ tar -zxf ngx_http_geoip2_module.tar.gz --strip-components=1 -C sources/modules/n
 
 make -j4
 
-make install DESTDIR=/var/git/qycli-nginx
+make install
+
+mkdir /var/git/qycli-nginx/payload
+make install DESTDIR=/var/git/qycli-nginx/payload
 
 ##### #####
 # Put dynamic libraries into git repo
 
 for lib in $(ldd /usr/local/nginx/sbin/nginx | grep -o "/lib/.* "); do
-    cp "$lib" /var/git/qycli-nginx"$lib"
+    cp "$lib" /var/git/qycli-nginx/payload"$lib"
 done
 
 cd /usr/local/nginx/modules || exit
 
 for ext in *; do
     for lib in $(ldd "$ext" | grep -o "/lib/.* "); do
-        cp "$lib" /var/git/qycli-nginx"$lib"
+        cp "$lib" /var/git/qycli-nginx/payload"$lib"
     done
 done
 
