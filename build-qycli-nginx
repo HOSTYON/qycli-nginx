@@ -6,12 +6,14 @@ add-apt-repository -y ppa:maxmind/ppa
 
 apt install -y build-essential software-properties-common curl wget libgd-dev libgeoip-dev libpcre3-dev libperl-dev libssl-dev libxslt-dev lsb-release zlib1g-dev tar unzip libpq-dev libpam0g-dev uuid-dev mmdb-bin libmaxminddb0 libmaxminddb-dev
 
+[[ -d /usr/src/qycli/nginx ]] && rm -rf /usr/src/qycli/nginx
+
 ##### #####
 # Download NGINX
 ngxLatestVer=$(curl 'http://nginx.org/download/' | grep -oP 'href="nginx-\K[0-9]+\.[0-9]+\.[0-9]+' | sort -t. -rn -k1,1 -k2,2 -k3,3 | head -1)
 
-mkdir -p /usr/src/qycli/nginx-"$ngxLatestVer"
-cd /usr/src/qycli/nginx-"$ngxLatestVer" || exit
+mkdir -p /usr/src/qycli/nginx
+cd /usr/src/qycli/nginx || exit
 
 curl "http://nginx.org/download/nginx-${ngxLatestVer}.tar.gz" >nginx-"$ngxLatestVer".tar.gz
 tar -zxf nginx-"$ngxLatestVer".tar.gz --strip-components=1
