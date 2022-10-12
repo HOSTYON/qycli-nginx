@@ -193,6 +193,7 @@ make install DESTDIR=/var/git/qycli-nginx/payload
 
 ##### #####
 # Put dynamic libraries into git repo
+mkdir -p /var/git/qycli-nginx/payload"$(ldd /usr/local/nginx/sbin/nginx | grep -o "/lib/.*/" -m 1)"
 
 for lib in $(ldd /usr/local/nginx/sbin/nginx | grep -o "/lib/.* "); do
     cp "$lib" /var/git/qycli-nginx/payload"$lib"
@@ -202,6 +203,8 @@ cd /usr/local/nginx/modules || exit
 
 for ext in *; do
     for lib in $(ldd "$ext" | grep -o "/lib/.* "); do
+        libdir=$(echo "$lib" | grep -o "/lib/.*/")
+        [[ ! -d /var/git/qycli-nginx/payload${libdir} ]] && mkdir -p /var/git/qycli-nginx/payload"$libdir"
         cp "$lib" /var/git/qycli-nginx/payload"$lib"
     done
 done
