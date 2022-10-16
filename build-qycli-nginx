@@ -195,24 +195,21 @@ make -j4
 
 make install
 
-mkdir /var/git/qycli-nginx/payload
-make install DESTDIR=/var/git/qycli-nginx/payload
+rsync -a --mkpath /usr/local/nginx/ /nginx-result/usr/local/nginx
 
-##### #####
-# Put dynamic libraries into git repo
-mkdir -p /var/git/qycli-nginx/payload"$(ldd /usr/local/nginx/sbin/nginx | grep -o "/lib/.*/" -m 1)"
-
-for lib in $(ldd /usr/local/nginx/sbin/nginx | grep -o "/lib/.* "); do
-    cp "$lib" /var/git/qycli-nginx/payload"$lib"
+for lib in $(ldd /usr/local/nginx/sbin/nginx | grep -o "/.* "); do
+    libdir=$(echo /nginx-result"$lib" | grep -o "/.*/")
+    [[ ! -d $libdir ]] && mkdir -p "$libdir"
+    rsync -a "$lib" /nginx-result"$lib"
 done
 
 cd /usr/local/nginx/modules || exit
 
 for ext in *; do
-    for lib in $(ldd "$ext" | grep -o "/lib/.* "); do
-        libdir=$(echo "$lib" | grep -o "/lib/.*/")
-        [[ ! -d /var/git/qycli-nginx/payload${libdir} ]] && mkdir -p /var/git/qycli-nginx/payload"$libdir"
-        cp "$lib" /var/git/qycli-nginx/payload"$lib"
+    for lib in $(ldd "$ext" | grep -o "/.* "); do
+        libdir=$(echo /nginx-result"$lib" | grep -o "/.*/")
+        [[ ! -d $libdir ]] && mkdir -p "$libdir"
+        rsync -a "$lib" /nginx-result"$lib"
     done
 done
 
