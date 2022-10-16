@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ -f /etc/needrestart/needrestart.conf ]]; then
+    export NEEDRESTART_MODE=a
+    sed "s+#\$nrconf{restart} = '.*';+\$nrconf{restart} = 'a';+" -i /etc/needrestart/needrestart.conf
+fi
+
 apt update && apt upgrade -y
 
 add-apt-repository -y ppa:maxmind/ppa
