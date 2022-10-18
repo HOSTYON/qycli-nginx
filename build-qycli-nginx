@@ -214,6 +214,39 @@ for ext in *; do
 done
 
 ##### #####
+# Getting dynamic libraries
+ldd /usr/local/nginx/sbin/nginx | grep -o "/.* " | cut -d ' ' -f 1 >>/usr/src/qycli/nginx/alllibs
+for lib in $(ldd /usr/local/nginx/sbin/nginx | grep -o "/.* "); do
+    ldd "$lib" | grep -o "/.* " | cut -d ' ' -f 1 >>/usr/src/qycli/nginx/alllibs
+    for lib2 in $(ldd "$lib" | grep -o "/.* "); do
+        ldd "$lib2" | grep -o "/.* " | cut -d ' ' -f 1 >>/usr/src/qycli/nginx/alllibs
+        for lib3 in $(ldd "$lib2" | grep -o "/.* "); do
+            ldd "$lib3" | grep -o "/.* " | cut -d ' ' -f 1 >>/usr/src/qycli/nginx/alllibs
+        done
+    done
+done
+
+cd /usr/local/nginx/modules || exit
+
+for ext in *; do
+    ldd "$ext" | grep -o "/.* " | cut -d ' ' -f 1 >>/usr/src/qycli/nginx/alllibs
+    for lib in $(ldd "$ext" | grep -o "/.* "); do
+        ldd "$lib" | grep -o "/.* " | cut -d ' ' -f 1 >>/usr/src/qycli/nginx/alllibs
+        for lib2 in $(ldd "$lib" | grep -o "/.* "); do
+            ldd "$lib2" | grep -o "/.* " | cut -d ' ' -f 1 >>/usr/src/qycli/nginx/alllibs
+        done
+    done
+done
+
+sort -u /usr/src/qycli/nginx/alllibs >/usr/src/qycli/nginx/libssorted
+
+while IFS= read -r lib; do
+    libdir=$(echo /nginx-result"$lib" | grep -o "/.*/")
+    [[ ! -d $libdir ]] && mkdir -p "$libdir"
+    rsync -aL "$lib" /nginx-result"$lib"
+done </usr/src/qycli/nginx/libssorted
+
+##### #####
 # Unused Modules - For using they have to be moved up
 
 # NGX Lua
