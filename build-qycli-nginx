@@ -1,5 +1,7 @@
 #!/bin/bash
 
+apt purge snapd -y && apt autoremove -y
+
 if [[ -f /etc/needrestart/needrestart.conf ]]; then
     export NEEDRESTART_MODE=a
     sed "s+#\$nrconf{restart} = '.*';+\$nrconf{restart} = 'a';+" -i /etc/needrestart/needrestart.conf
