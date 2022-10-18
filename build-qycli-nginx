@@ -197,22 +197,6 @@ make install
 
 rsync -a --mkpath /usr/local/nginx/ /nginx-result/usr/local/nginx
 
-for lib in $(ldd /usr/local/nginx/sbin/nginx | grep -o "/.* "); do
-    libdir=$(echo /nginx-result"$lib" | grep -o "/.*/")
-    [[ ! -d $libdir ]] && mkdir -p "$libdir"
-    rsync -a "$lib" /nginx-result"$lib"
-done
-
-cd /usr/local/nginx/modules || exit
-
-for ext in *; do
-    for lib in $(ldd "$ext" | grep -o "/.* "); do
-        libdir=$(echo /nginx-result"$lib" | grep -o "/.*/")
-        [[ ! -d $libdir ]] && mkdir -p "$libdir"
-        rsync -a "$lib" /nginx-result"$lib"
-    done
-done
-
 ##### #####
 # Getting dynamic libraries
 ldd /usr/local/nginx/sbin/nginx | grep -o "/.* " | cut -d ' ' -f 1 >>/usr/src/qycli/nginx/alllibs
