@@ -198,6 +198,7 @@ make -j4
 make install
 
 rsync -a --mkpath /usr/local/nginx/ /nginx-result/usr/local/nginx
+rsync -a --mkpath /etc/nginx/ /nginx-result/etc/nginx/default
 
 ##### #####
 # Getting dynamic libraries
