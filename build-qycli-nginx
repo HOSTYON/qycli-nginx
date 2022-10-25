@@ -195,7 +195,7 @@ make -j4
 
 make install
 
-rsync -a --mkpath "$prefix" /nginx-result"$prefix"
+rsync -a --mkpath "$prefix"/ /nginx-result"$prefix"
 rsync -a --mkpath /etc/nginx/ /nginx-result"$prefix"/etc
 
 ##### #####
