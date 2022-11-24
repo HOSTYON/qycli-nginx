@@ -138,14 +138,14 @@ tar -zxf ngx_http_geoip2_module.tar.gz --strip-components=1 -C sources/modules/n
 ##### #####
 # Compilation
 
-prefix=/usr/local/qycli/nginx
+prefix=/var/qyc/bin/nginx
 
 # shellcheck disable=SC2016
 ./configure \
     --prefix="$prefix" \
     --with-ld-opt='-Wl,-rpath=\$$ORIGIN/../lib' \
     --with-cc-opt='-Wno-error' \
-    --conf-path=/etc/nginx/nginx.conf \
+    --conf-path=/etc/qyc/nginx/nginx.conf \
     --http-log-path=/var/log/nginx/access.log \
     --error-log-path=/var/log/nginx/error.log \
     --lock-path=/var/lock/nginx.lock \
@@ -196,7 +196,7 @@ make -j4
 make install
 
 rsync -a --mkpath "$prefix"/ /nginx-result"$prefix"
-rsync -a --mkpath /etc/nginx/ /nginx-result"$prefix"/etc
+rsync -a --mkpath /etc/qyc/nginx/ /nginx-result"$prefix"/etc
 
 ##### #####
 # Getting dynamic libraries
